@@ -1,5 +1,5 @@
 # Kynema-FMB
-[Documentation](https://kynema.github.io/kynema-fmb) | [Nightly test dashboard](http://my.cdash.org/index.php?project=Exawind) 
+[Documentation](https://kynema.github.io/kynema-fmb) | [Nightly test dashboard](http://my.cdash.org/index.php?project=Kynema) 
 
 Kynema-FMB is an open-source performance portable flexible multibody (FMB) dynamics
 solver designed for time-domain simulations.  While originally tailored for
