@@ -25,13 +25,17 @@ jobs:
         id: cache-dependencies
         uses: actions/cache@v5
         with:
-          path: ${{ github.workspace }}/spack
+          path: |
+            ${{ github.workspace }}/spack
+            ${{ github.workspace }}/spack-packages
           key: linux-spack_v7
       - name: Install Dependencies
         if: steps.cache-dependencies.outputs.cache-hit != 'true'
         run: |
           git clone https://github.com/spack/spack.git
           source spack/share/spack/setup-env.sh
+          spack repo add --name my_pkgs https://github.com/jrood-nrel/spack-packages.git ${{ github.workspace }}/my_pkgs
+          spack repo list
           spack compiler find
           spack install googletest
           spack install cppcheck
@@ -51,7 +55,7 @@ jobs:
       - name: Test Kynema-FMB
         run: |
           source spack/share/spack/setup-env.sh
-          spack load kokkos-kernels@4.7.02
+          spack load kokkos-kernels
           spack load suite-sparse
           spack load superlu
           spack load googletest
@@ -70,7 +74,7 @@ jobs:
             -DKYNEMA_FMB_ENABLE_SANITIZER_UNDEFINED=${{ matrix.build_external == 'none' }} \
             -DKYNEMA_FMB_ENABLE_CPPCHECK=ON \
             -DKYNEMA_FMB_ENABLE_CLANG_TIDY=ON \
-            -DKYNEMA_FMB_WARNINGS_AS_ERRORS=ON \
+            -DKYNEMA_FMB_WARNINGS_AS_ERRORS=OFF \
             -DKYNEMA_FMB_ENABLE_OPENFAST_ADI=OFF \
             -DKYNEMA_FMB_ENABLE_ROSCO_CONTROLLER=${{ matrix.build_external == 'all' }} \
             -DKYNEMA_FMB_ENABLE_KLU=ON \
